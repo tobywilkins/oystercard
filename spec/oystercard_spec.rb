@@ -28,15 +28,6 @@ describe Oystercard do
     end
   end
 
-  describe '#deduct' do
-    it{is_expected.to respond_to(:deduct).with(1).argument}
-
-    it "can deduct from the balance" do
-      subject.top_up(10)
-      expect{ subject.deduct 1}.to change{subject.balance}.by -1
-    end
-  end
-
   describe "#in_journey?" do
     it 'is defaultly not in in_journey' do
       expect(subject).not_to be_in_journey
@@ -65,6 +56,11 @@ context 'starts at max balance' do
       expect(subject).to be_in_journey
       subject.touch_out
       expect(subject).not_to be_in_journey
+    end
+
+    it 'reduces balance by MINIMUM_FARE' do
+      subject.touch_in
+      expect{subject.touch_out}.to change{subject.balance}.by -Oystercard::MINIMUM_FARE
     end
   end
 end
