@@ -1,6 +1,8 @@
 require 'oystercard'
 describe Oystercard do
 
+  let(:station) { double :station }
+
   describe '#balance' do
     it 'has a balance' do
       expect(subject.balance).to eq 0
@@ -36,7 +38,7 @@ describe Oystercard do
 
   describe '#touch_in' do
     it 'raises error if balance is less than minimum fair' do
-      expect{subject.touch_in}.to raise_error "Infsufficient balance"
+      expect{subject.touch_in(station)}.to raise_error "Infsufficient balance"
     end
   end
 
@@ -45,21 +47,32 @@ context 'starts at max balance' do
 
   describe '#touch_in' do
     it 'change in_journey to true' do
-      subject.touch_in
+      subject.touch_in(station)
       expect(subject).to be_in_journey
+    end
+
+    it 'remembers entry station' do
+      subject.touch_in(station)
+      expect(subject.entry_station).to eq station
     end
   end
 
   describe '#touch_out' do
     it 'change in_journey to false' do
-      subject.touch_in
+      subject.touch_in(station)
       expect(subject).to be_in_journey
       subject.touch_out
       expect(subject).not_to be_in_journey
     end
 
+    it 'sets entry station to nil' do
+      subject.touch_in(station)
+      subject.touch_out
+      expect(subject.entry_station).to eq nil
+    end
+
     it 'reduces balance by MINIMUM_FARE' do
-      subject.touch_in
+      subject.touch_in(station)
       expect{subject.touch_out}.to change{subject.balance}.by -Oystercard::MINIMUM_FARE
     end
   end
