@@ -18,6 +18,7 @@ class Oystercard
   end
 
   def touch_in
+    raise "Not enough balance" if !(minimum_balance?)
     @journey = true
   end
 
@@ -33,5 +34,9 @@ class Oystercard
 
   def maximum_balance_exceeded?(amount)
     (@balance + amount) > MAXIMUM_BALANCE
+  end
+
+  def minimum_balance?
+    @balance >= 1
   end
 end
