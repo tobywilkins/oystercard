@@ -39,9 +39,18 @@ describe Oystercard do
 
   describe "#in_journey?" do
     it 'is defaultly not in in_journey' do
-      expect(subject).not_to be_in_journey 
+      expect(subject).not_to be_in_journey
     end
   end
+
+  describe '#touch_in' do
+    it 'raises error if balance is less than minimum fair' do
+      expect{subject.touch_in}.to raise_error "Infsufficient balance"
+    end
+  end
+
+context 'starts at max balance' do
+  before(:each){subject.top_up(Oystercard::MAXIMUM_BALANCE)}
 
   describe '#touch_in' do
     it 'change in_journey to true' do
@@ -58,5 +67,6 @@ describe Oystercard do
       expect(subject).not_to be_in_journey
     end
   end
+end
 
 end
