@@ -10,7 +10,9 @@ describe 'feature test' do
   # oystercard.touch_out
   # print oystercard.in_journey?
   oystercard.top_up(10)
-  print oystercard.touch_in
+  oystercard.touch_in
+  oystercard.touch_out(2)
+
 
 
   end

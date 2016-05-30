@@ -17,13 +17,13 @@ describe Oystercard do
     end
   end
 
-  describe '#deduct' do
-    it {should respond_to(:deduct).with 1}
-    it 'should deduct the amount from the balance' do
-    subject.top_up(10)
-    expect(subject.deduct(5)).to eq 5
-    end
-  end
+  # describe '#deduct' do
+  #   it {should respond_to(:deduct).with 1}
+  #   it 'should deduct the amount from the balance' do
+  #   subject.top_up(10)
+  #   expect(subject.deduct(5)).to eq 5
+  #   end
+  # end
 
   describe '#touch_in' do
     it {should respond_to(:touch_in)}
@@ -42,12 +42,17 @@ describe Oystercard do
     it 'should be false if touched out' do
       subject.top_up(10)
       subject.touch_in
-      subject.touch_out
+      subject.touch_out(5)
       expect(subject.in_journey?).to eq false
     end
   end
 
   describe '#touch_out' do
   it {should respond_to(:touch_out)}
+  it 'should deduct the fare' do
+    subject.top_up(10)
+    expect{subject.touch_out(5)}.to change{subject.balance}.from(10).to(5)
+
+  end
   end
 end
