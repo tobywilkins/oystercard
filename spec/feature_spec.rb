@@ -4,6 +4,10 @@ describe 'feature test' do
   it 'works' do
   oystercard = Oystercard.new
   oystercard.top_up(10)
-  print oystercard.balance
+  oystercard.deduct(5)
+  oystercard.touch_in
+  print oystercard.in_journey?
+  oystercard.touch_out
+  print oystercard.in_journey?
   end
 end

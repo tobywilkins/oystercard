@@ -16,4 +16,33 @@ describe Oystercard do
       expect{subject.top_up(100)}.to raise_error("Cannot top up because the maximum balance is #{Oystercard::MAXIMUM_BALANCE}")
     end
   end
+
+  describe '#deduct' do
+    it {should respond_to(:deduct).with 1}
+    it 'should deduct the amount from the balance' do
+    subject.top_up(10)
+    expect(subject.deduct(5)).to eq 5
+    end
+  end
+
+  describe '#touch_in' do
+    it {should respond_to(:touch_in)}
+  end
+
+  describe '#in_journey?' do
+    it {should respond_to(:in_journey?)}
+    it 'should be true if touched in' do
+      subject.touch_in
+      expect(subject.in_journey?).to eq true
+    end
+    it 'should be false if touched out' do
+      subject.touch_in
+      subject.touch_out
+      expect(subject.in_journey?).to eq false
+    end
+  end
+
+  describe '#touch_out' do
+  it {should respond_to(:touch_out)}
+  end
 end
