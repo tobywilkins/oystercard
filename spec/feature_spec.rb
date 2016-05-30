@@ -11,7 +11,8 @@ describe 'feature test' do
   # print oystercard.in_journey?
   oystercard.top_up(10)
   oystercard.touch_in("Oxford Circus")
-  oystercard.touch_out(2)
+  oystercard.touch_out(2, "Brent Cross")
+  print oystercard.journeys
 
 
 

@@ -1,6 +1,7 @@
 require 'oystercard'
 describe Oystercard do
  let(:station) {double(:station)}
+ let(:exit_station) {double(:exit_station)}
   describe '::initialize' do
     it 'should have ab balance of 0' do
       expect(subject.balance).to eq (0)
@@ -30,11 +31,11 @@ describe Oystercard do
     it 'should raise error if balance is under minimum' do
       expect{subject.touch_in("xyz")}.to raise_error("Not enough balance")
     end
-    it "updates the station" do
-      subject.top_up(10)
-      subject.touch_in(station)
-      expect(subject.entry_station).to eq(station)
-    end
+    # it "updates the station" do
+    #   subject.top_up(10)
+    #   subject.touch_in(station)
+    #   expect(subject.entry_station).to eq(station)
+    # end
 
   end
 
@@ -48,22 +49,33 @@ describe Oystercard do
     it 'should be false if touched out' do
       subject.top_up(10)
       subject.touch_in(station)
-      subject.touch_out(5)
+      subject.touch_out(5,exit_station)
       expect(subject.in_journey?).to eq false
     end
   end
 
   describe '#touch_out' do
-  it {should respond_to(:touch_out)}
-  it 'should deduct the fare' do
-    subject.top_up(10)
-    expect{subject.touch_out(5)}.to change{subject.balance}.from(10).to(5)
-  end
-  it 'should wipe the entry station and set it to nil' do
-    subject.top_up(10)
-    subject.touch_in(station)
-    subject.touch_out(5)
-    expect(subject.entry_station).to eq nil
-  end
+    it {should respond_to(:touch_out)}
+    it 'should deduct the fare' do
+      subject.top_up(10)
+      expect{subject.touch_out(5,exit_station)}.to change{subject.balance}.from(10).to(5)
+    end
+    # it 'should wipe the entry station and set it to nil' do
+    #   subject.top_up(10)
+    #   subject.touch_in(station)
+    #   subject.touch_out(5,exit_station)
+    #   expect(subject.entry_station).to eq nil
+    # end
+
+    it 'should give out Entry Station : Exit station' do
+      subject.top_up(10)
+      subject.touch_in(station)
+      subject.touch_out(5,exit_station)
+      expect(subject.journeys).to eq "#{station} : #{exit_station}"
+    end
+
+    it 'should return nil if no journeys' do
+    expect(subject.journeys).to eq nil
+    end
   end
 end

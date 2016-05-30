@@ -1,12 +1,13 @@
 class Oystercard
   MAXIMUM_BALANCE = 90
 
-  attr_reader :balance, :entry_station
+  attr_reader :balance
 
   def initialize
     @balance = 0
     @journey = false
     @entry_station = nil
+    @journeys = {}
   end
 
   def top_up(amount)
@@ -14,7 +15,9 @@ class Oystercard
     @balance = (@balance + amount)
   end
 
-
+ def journeys
+  @journeys == {} ? nil : pretty_print_journeys
+ end
 
   def touch_in(station)
     raise "Not enough balance" if !(minimum_balance?)
@@ -26,10 +29,12 @@ class Oystercard
     !(@entry_station.nil?)
   end
 
-  def touch_out(fare)
+  def touch_out(fare,exit_station)
     deduct(fare)
     @journey = false
+    @journeys[@entry_station] = exit_station
     @entry_station = nil
+
   end
 
   private
@@ -44,5 +49,13 @@ class Oystercard
 
   def minimum_balance?
     @balance >= 1
+  end
+
+  def pretty_print_journeys
+    output = ""
+    @journeys.each do |entry,exit| output <<
+    "#{entry} : #{exit}"
+    end
+    return output
   end
 end
