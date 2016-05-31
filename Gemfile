@@ -1,5 +1,5 @@
 source "https://rubygems.org"
 
-ruby ENV['CUSTOM_RUBY_VERSION'] || '2.3.1'
+ruby ENV['CUSTOM_RUBY_VERSION']
 
 gem "rspec"
