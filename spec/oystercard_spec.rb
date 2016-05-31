@@ -7,6 +7,7 @@ describe Oystercard do
   end
 
   let(:entry_station) {double :entry_station}
+  let(:exit_station) {double :exit_station}
 
   describe "#top_up" do
 
@@ -17,7 +18,7 @@ describe Oystercard do
 
   describe "#touch_in" do
 
-    it "should return true if user touched in" do
+    it "should return station if user touched in" do
       expect(subject.touch_in(entry_station)).to eq entry_station
     end
 
@@ -30,13 +31,9 @@ describe Oystercard do
     end
 
     it "should deduct a fare on touch_out" do
-      expect{subject.touch_out}.to change{subject.balance}.by -(Oystercard::MINIMUM_FARE)
+      expect{subject.touch_out(exit_station)}.to change{subject.balance}.by -(Oystercard::MINIMUM_FARE)
     end
 
-    it "should forget the entry station on touch out" do
-      subject.touch_out
-      expect(subject.entry_station).to be nil
-    end
   end
 
   describe "#in_journey?" do
@@ -49,10 +46,13 @@ describe Oystercard do
       p subject.in_journey?
       expect(subject.in_journey?).to eq true
     end
+  end
 
-    it "should not be in a journey if touched in and touched out." do
-      subject.touch_out
-      expect(subject).not_to be_in_journey
+  describe "#journey_history" do
+    it "returns a journey's history" do
+      subject.touch_in(entry_station)
+      subject.touch_out(exit_station)
+      expect(subject.journey_history).to include({entry_station => exit_station})
     end
   end
 
