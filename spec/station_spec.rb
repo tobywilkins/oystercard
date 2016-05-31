@@ -1,7 +1,7 @@
 require 'station'
 
 describe Station do
-subject(:station) {described_class.new("Waterloo",1)}
+subject(:station) {described_class.new("Waterloo", 1)}
 
   describe '::new' do
 
