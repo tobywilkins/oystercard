@@ -20,7 +20,6 @@ class Oystercard
 
   def touch_in(entry_station)
     @entry_station = entry_station
-
   end
 
   def touch_out(exit_station)
