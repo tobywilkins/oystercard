@@ -1,3 +1,5 @@
+require_relative "journey"
+
 class Oystercard
 
   MAXIMUM_BALANCE = 90
@@ -10,7 +12,7 @@ class Oystercard
     @balance = 0
     @entry_station = entry_station
     @exit_station = exit_station
-    @journey = []
+    @journey = Journey.new
   end
 
   def top_up(amount)
@@ -25,19 +27,15 @@ class Oystercard
   def touch_out(exit_station)
     deduct(MINIMUM_FARE)
     @exit_station = exit_station
-    journey_history
+    journey.journey_history(stations)
+    clear_history
   end
+
 
   def in_journey?
     !!entry_station
   end
-
-  def journey_history
-    journey << {entry_station => exit_station}
-    clear_history
-    journey
-  end
-
+  
   private
 
   attr_reader :journey
@@ -47,10 +45,14 @@ class Oystercard
     @balance -= fare
   end
 
+  def stations
+    {entry_station => exit_station}
+  end
+
   def clear_history
     @entry_station = nil
     @exit_station = nil
+    "You touched out. Your journey has been logged."
   end
-
 
 end

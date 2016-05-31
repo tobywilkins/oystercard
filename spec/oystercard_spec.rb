@@ -9,6 +9,17 @@ describe Oystercard do
   let(:entry_station) {double :entry_station}
   let(:exit_station) {double :exit_station}
 
+  describe "#in_journey?" do
+
+    before(:each) do
+      subject.touch_in(entry_station)
+    end
+
+    it "should let oystercard know it is in a journey." do
+      expect(subject.in_journey?).to eq true
+    end
+  end
+
   describe "#top_up" do
 
   	it "should raise an error if balance reaches card capacity." do
@@ -35,26 +46,5 @@ describe Oystercard do
     end
 
   end
-
-  describe "#in_journey?" do
-
-    before(:each) do
-      subject.touch_in(entry_station)
-    end
-
-    it "should let oystercard know it is in a journey." do
-      p subject.in_journey?
-      expect(subject.in_journey?).to eq true
-    end
-  end
-
-  describe "#journey_history" do
-    it "returns a journey's history" do
-      subject.touch_in(entry_station)
-      subject.touch_out(exit_station)
-      expect(subject.journey_history).to include({entry_station => exit_station})
-    end
-  end
-
 
 end
