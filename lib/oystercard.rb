@@ -28,11 +28,7 @@ class Oystercard
   end
 
   def touch_out(station)
-    if @journey
-      deduct(correct_fare(station))
-    else
-      deduct(PENALTY_FARE)
-    end
+    @journey ? deduct(correct_fare(station)) : deduct(PENALTY_FARE)
     store_journey
   end
 
