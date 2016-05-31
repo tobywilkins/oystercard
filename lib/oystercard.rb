@@ -32,7 +32,6 @@ class Oystercard
     @exit_station= station
     store_journey
     @entry_station= nil
-
   end
 
   private
