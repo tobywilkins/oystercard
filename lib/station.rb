@@ -1,4 +1,4 @@
-class Station
+class Station #physical place with data
 
 
   attr_reader :station_name, :zone_number

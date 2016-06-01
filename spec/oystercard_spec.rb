@@ -2,23 +2,14 @@ require 'oystercard'
 
 describe Oystercard do
 
+  subject {described_class.new}
+
   before(:each) do
     subject.top_up(Oystercard::MAXIMUM_BALANCE)
   end
 
   let(:entry_station) {double :entry_station}
   let(:exit_station) {double :exit_station}
-
-  describe "#in_journey?" do
-
-    before(:each) do
-      subject.touch_in(entry_station)
-    end
-
-    it "should let oystercard know it is in a journey." do
-      expect(subject.in_journey?).to eq true
-    end
-  end
 
   describe "#top_up" do
 
@@ -31,6 +22,10 @@ describe Oystercard do
 
     it "should return station if user touched in" do
       expect(subject.touch_in(entry_station)).to eq entry_station
+    end
+
+    it 'should raise an error if balance is under minimum' do
+       expect{Oystercard.new.touch_in(entry_station)}.to raise_error "There is not enough credit."
     end
 
   end
