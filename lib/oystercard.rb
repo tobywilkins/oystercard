@@ -4,12 +4,13 @@ class Oystercard #an object with a balance that interacts with LU
 
   MAXIMUM_BALANCE = 90
   MINIMUM_BALANCE = 1
-  MINIMUM_FARE = 2
 
   attr_reader :balance
 
   def initialize
     @balance = 0
+    @journey_history = []
+    @journey = Journey.new
     # @entry_station = entry_station
     # @exit_station = exit_station
     # @journey = Journey.new
@@ -22,24 +23,30 @@ class Oystercard #an object with a balance that interacts with LU
 
   def touch_in(entry_station)
     balance_check
-    @journey = Journey.new
     journey.set_entry_station(entry_station)
     # @entry_station = entry_station
   end
 
   def touch_out(exit_station)
-    deduct(MINIMUM_FARE)
     journey.set_exit_station(exit_station)
+    deduct(journey.fare)
+    set_journey_history
+    journey.clear_history
+    journey_history
   end
+
 
   private
 
-  attr_reader :journey
+  attr_reader :journey, :journey_history
 
   def deduct(fare)
     @balance -= fare
   end
 
+  def set_journey_history
+    journey_history << journey.stations
+  end
 
   def balance_check
     fail "There is not enough credit." if balance < MINIMUM_BALANCE

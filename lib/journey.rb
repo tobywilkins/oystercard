@@ -1,5 +1,8 @@
 class Journey #tracks travelling data between a-b
-  attr_reader :entry_station
+  MINIMUM_FARE = 2
+  PENALTY_FARE = 6
+
+  attr_reader :entry_station, :journey
 
   def initialize
     @journey = []
@@ -13,28 +16,30 @@ class Journey #tracks travelling data between a-b
     @exit_station = exit_station
   end
 
-  def journey_history(stations)
-    journey << stations
-    clear_history
-    journey
-  end
-
 
   def in_journey?
     !!entry_station
   end
 
-  private
-
-  attr_reader :journey, :entry_station, :exit_station
+  def stations
+    {entry_station => exit_station}
+  end
 
   def clear_history
     @entry_station = nil
     @exit_station = nil
   end
 
-    def stations
-    {entry_station => exit_station}
+  def fare
+    check_penalty ? PENALTY_FARE : MINIMUM_FARE
+  end
+
+  private
+
+  attr_reader :entry_station, :exit_station
+
+  def check_penalty
+    (entry_station.nil? && !!exit_station) || (exit_station.nil? && !!entry_station)
   end
 
 end

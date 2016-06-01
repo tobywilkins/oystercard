@@ -24,6 +24,12 @@ let(:exit_station) {double :exit_station}
     end
   end
 
+  describe '#fare' do
+    it 'should calculate the right fare' do
+      
+    end
+  end
+
 
 
 
