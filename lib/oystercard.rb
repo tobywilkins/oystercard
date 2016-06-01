@@ -5,7 +5,7 @@ class Oystercard #an object with a balance that interacts with LU
   MAXIMUM_BALANCE = 90
   MINIMUM_BALANCE = 1
 
-  attr_reader :balance
+  attr_reader :balance, :journey_log
 
   def initialize
     @balance = 0
@@ -19,7 +19,7 @@ class Oystercard #an object with a balance that interacts with LU
 
   def touch_in(entry_station)
     balance_check
-    journey_log.start(entry_station)
+    deduct(journey_log.start(entry_station))
     # @entry_station = entry_station
   end
 
@@ -30,7 +30,7 @@ class Oystercard #an object with a balance that interacts with LU
 
   private
 
-  attr_reader :journey, :journey_log
+  attr_reader :journey
 
   def deduct(fare)
     @balance -= fare

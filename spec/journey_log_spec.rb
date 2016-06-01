@@ -13,6 +13,10 @@ describe JourneyLog do
       subject.start(entry_station)
       expect(subject.log).to eq []
     end
+    it "finishes old journey if second touch in" do
+      2.times {subject.start(entry_station)}
+      expect(subject.log).to eq [[entry_station, nil]]
+    end
   end
 
   describe '#finish' do
