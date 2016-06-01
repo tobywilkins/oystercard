@@ -32,12 +32,13 @@ describe Oystercard do
 
   describe "#touch_out" do
 
-    before(:each) do
-      subject.touch_in(entry_station)
+    it "should deduct a fare on touch_out" do
+        subject.touch_in(entry_station)
+      expect{subject.touch_out(exit_station)}.to change{subject.balance}.by -(Journey::MINIMUM_FARE)
     end
 
-    it "should deduct a fare on touch_out" do
-      expect{subject.touch_out(exit_station)}.to change{subject.balance}.by -(Journey::MINIMUM_FARE)
+    it "should deduct a penalty fare if no touch_in" do
+      expect{subject.touch_out(exit_station)}.to change{subject.balance}.by -(Journey::PENALTY_FARE)
     end
 
   end

@@ -1,4 +1,6 @@
-class Journey #tracks travelling data between a-b
+require_relative 'station'
+
+class Journey #tracks current travel data between a-b for an oyster card
   MINIMUM_FARE = 2
   PENALTY_FARE = 6
 

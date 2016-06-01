@@ -1,4 +1,4 @@
-require_relative "journey"
+require_relative 'journey'
 
 class Oystercard #an object with a balance that interacts with LU
 
@@ -9,11 +9,8 @@ class Oystercard #an object with a balance that interacts with LU
 
   def initialize
     @balance = 0
-    @journey_history = []
     @journey = Journey.new
-    # @entry_station = entry_station
-    # @exit_station = exit_station
-    # @journey = Journey.new
+    @journey_log = JourneyLog.new
   end
 
   def top_up(amount)
@@ -30,22 +27,17 @@ class Oystercard #an object with a balance that interacts with LU
   def touch_out(exit_station)
     journey.set_exit_station(exit_station)
     deduct(journey.fare)
-    set_journey_history
+    journey_log.add_journey_to_log(journey)
     journey.clear_history
-    journey_history
   end
 
 
   private
 
-  attr_reader :journey, :journey_history
+  attr_reader :journey, :journey_log
 
   def deduct(fare)
     @balance -= fare
-  end
-
-  def set_journey_history
-    journey_history << journey.stations
   end
 
   def balance_check
