@@ -1,4 +1,5 @@
 require_relative 'station'
+require_relative 'journey_log'
 
 class Journey #tracks current travel data between a-b for an oyster card
   MINIMUM_FARE = 2
