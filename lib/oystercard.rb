@@ -9,7 +9,6 @@ class Oystercard #an object with a balance that interacts with LU
 
   def initialize
     @balance = 0
-    @journey = Journey.new
     @journey_log = JourneyLog.new
   end
 
@@ -20,15 +19,12 @@ class Oystercard #an object with a balance that interacts with LU
 
   def touch_in(entry_station)
     balance_check
-    journey.set_entry_station(entry_station)
+    journey_log.start(entry_station)
     # @entry_station = entry_station
   end
 
   def touch_out(exit_station)
-    journey.set_exit_station(exit_station)
-    deduct(journey.fare)
-    journey_log.add_journey_to_log(journey)
-    journey.clear_history
+    deduct(journey_log.finish(exit_station))
   end
 
 

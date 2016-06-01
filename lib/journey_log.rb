@@ -5,6 +5,7 @@ attr_reader :journey_history
 
   def initialize
     @journey_history = []
+    @current_journey = []
   end
 
   def log
@@ -14,27 +15,30 @@ attr_reader :journey_history
   def start(entry_station)
     @journey = Journey.new
     journey.set_entry_station(entry_station)
-    @journey_history << entry_station
+    current_journey << entry_station
   end
 
   def finish(exit_station)
-    if !!journey
-      journey.set_exit_station(exit_station)
-      @journey_history << exit_station
-    else
-      @journey = Journey.new
-      journey.set_exit_station(exit_station)
-      @journey_history << nil
-      @journey_history << exit_station
-    end
-  end
-
-  def add_journey_to_log (journey = Journey.new)
-    journey_history << journey.stations
+    !!journey ? complete_journey(exit_station) : no_touch_in(exit_station)
+    journey_history << current_journey
+    journey.fare
   end
 
   private
 
-  attr_reader :journey
+  attr_reader :journey, :current_journey
+
+
+  def no_touch_in(exit_station)
+    @journey = Journey.new
+    journey.set_exit_station(exit_station)
+    current_journey << nil
+    current_journey << exit_station
+  end
+
+  def complete_journey(exit_station)
+    journey.set_exit_station(exit_station)
+    current_journey << exit_station
+  end
 
 end

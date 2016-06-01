@@ -19,20 +19,6 @@ class Journey #tracks current travel data between a-b for an oyster card
     @exit_station = exit_station
   end
 
-
-  def in_journey?
-    !!entry_station
-  end
-
-  def stations
-    {entry_station => exit_station}
-  end
-
-  def clear_history
-    @entry_station = nil
-    @exit_station = nil
-  end
-
   def fare
     check_penalty ? PENALTY_FARE : MINIMUM_FARE
   end
